@@ -7,10 +7,31 @@ import (
 	"os"
 	"strconv"
 	"strings"
+	"unicode"
 )
 
-func solve() string {
-	return "solution"
+func isCapsLock(s string) bool {
+	for _, l := range s[1:] {
+		if !unicode.IsUpper(l) {
+			return false
+		}
+	}
+	return true
+}
+
+func solve(s string) string {
+	if !isCapsLock(s) {
+		return s
+	}
+	sNew := strings.Builder{}
+	for _, v := range s {
+		if unicode.IsUpper(v) {
+			sNew.WriteRune(unicode.ToLower(v))
+		} else {
+			sNew.WriteRune(unicode.ToUpper(v))
+		}
+	}
+	return sNew.String()
 }
 
 func stringToIntSlice(s string) []int {
@@ -72,6 +93,6 @@ func main() {
 	w := bufio.NewWriter(os.Stdout)
 	defer w.Flush()
 
-	result := solve()
+	result := solve(readString(r))
 	w.WriteString(fmt.Sprintf("%v\n", result))
 }

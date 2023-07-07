@@ -9,8 +9,18 @@ import (
 	"strings"
 )
 
-func solve() string {
-	return "solution"
+func solve(vectors [][]int, n int) string {
+	vSum := make([]int, 3)
+	for _, v := range vectors {
+		vSum[0] += v[0]
+		vSum[1] += v[1]
+		vSum[2] += v[2]
+	}
+
+	if vSum[0] == 0 && vSum[1] == 0 && vSum[2] == 0 {
+		return "YES"
+	}
+	return "NO"
 }
 
 func stringToIntSlice(s string) []int {
@@ -72,6 +82,12 @@ func main() {
 	w := bufio.NewWriter(os.Stdout)
 	defer w.Flush()
 
-	result := solve()
+	n := readInt(r)
+	vectors := make([][]int, n)
+	for i := 0; i < n; i++ {
+		vectors[i] = readIntSlice(r)
+	}
+
+	result := solve(vectors, n)
 	w.WriteString(fmt.Sprintf("%v\n", result))
 }

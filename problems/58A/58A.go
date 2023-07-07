@@ -9,8 +9,19 @@ import (
 	"strings"
 )
 
-func solve() string {
-	return "solution"
+func solve(s string) string {
+	target := "hello"
+	idx := 0
+
+	for i, _ := range s {
+		if s[i] == target[idx] {
+			idx++
+		}
+		if idx == len(target) {
+			return "YES"
+		}
+	}
+	return "NO"
 }
 
 func stringToIntSlice(s string) []int {
@@ -72,6 +83,6 @@ func main() {
 	w := bufio.NewWriter(os.Stdout)
 	defer w.Flush()
 
-	result := solve()
+	result := solve(readString(r))
 	w.WriteString(fmt.Sprintf("%v\n", result))
 }

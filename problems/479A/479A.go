@@ -9,8 +9,26 @@ import (
 	"strings"
 )
 
-func solve() string {
-	return "solution"
+func maxIntInSlice(ints []int) int {
+	max := 0
+	for _, n := range ints {
+		if n > max {
+			max = n
+		}
+	}
+	return max
+}
+
+func solve(a, b, c int) int {
+	totals := []int{
+		a + b + c,
+		a + (b * c),
+		(a + b) * c,
+		(a * b) + c,
+		a * (b + c),
+		a * b * c,
+	}
+	return maxIntInSlice(totals)
 }
 
 func stringToIntSlice(s string) []int {
@@ -72,6 +90,10 @@ func main() {
 	w := bufio.NewWriter(os.Stdout)
 	defer w.Flush()
 
-	result := solve()
+	a := readInt(r)
+	b := readInt(r)
+	c := readInt(r)
+
+	result := solve(a, b, c)
 	w.WriteString(fmt.Sprintf("%v\n", result))
 }

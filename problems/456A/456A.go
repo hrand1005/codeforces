@@ -5,12 +5,29 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"sort"
 	"strconv"
 	"strings"
 )
 
-func solve() string {
-	return "solution"
+func solve(laptops [][]int) string {
+	priceVal := make(map[int]int)
+	prices := make([]int, len(laptops))
+	for i, l := range laptops {
+		priceVal[l[0]] = l[1]
+		prices[i] = l[0]
+	}
+	sort.Ints(prices)
+
+	maxVal := priceVal[prices[0]]
+	for _, p := range prices[1:] {
+		if priceVal[p] < maxVal {
+			return "Happy Alex"
+		} else {
+			maxVal = priceVal[p]
+		}
+	}
+	return "Poor Alex"
 }
 
 func max(a, b int) int {
@@ -86,6 +103,12 @@ func main() {
 	w := bufio.NewWriter(os.Stdout)
 	defer w.Flush()
 
-	result := solve()
+	n := readInt(r)
+	laptops := make([][]int, n)
+	for i := 0; i < n; i++ {
+		laptops[i] = readIntSlice(r)
+	}
+
+	result := solve(laptops)
 	w.WriteString(fmt.Sprintf("%v\n", result))
 }

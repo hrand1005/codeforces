@@ -9,8 +9,16 @@ import (
 	"strings"
 )
 
-func solve() string {
-	return "solution"
+func solve(angles []int) []string {
+	results := make([]string, len(angles))
+	for i, a := range angles {
+		if 360%(180-a) == 0 {
+			results[i] = "YES"
+		} else {
+			results[i] = "NO"
+		}
+	}
+	return results
 }
 
 func max(a, b int) int {
@@ -86,6 +94,14 @@ func main() {
 	w := bufio.NewWriter(os.Stdout)
 	defer w.Flush()
 
-	result := solve()
-	w.WriteString(fmt.Sprintf("%v\n", result))
+	n := readInt(r)
+	angles := make([]int, n)
+	for i := 0; i < n; i++ {
+		angles[i] = readInt(r)
+	}
+
+	results := solve(angles)
+	for _, r := range results {
+		w.WriteString(fmt.Sprintf("%v\n", r))
+	}
 }

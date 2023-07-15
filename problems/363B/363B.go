@@ -9,22 +9,23 @@ import (
 	"strings"
 )
 
-func solve() string {
-	return "solution"
-}
-
-func max(a, b int) int {
-	if a > b {
-		return a
+func solve(k int, plankHeights []int) int {
+	minHeight := 0
+	for i := 0; i < k; i++ {
+		minHeight += plankHeights[i]
 	}
-	return b
-}
 
-func min(a, b int) int {
-	if a > b {
-		return a
+	height := minHeight
+	minIdx := 0
+	for i := k; i < len(plankHeights); i++ {
+		height = height - plankHeights[i-k] + plankHeights[i]
+		if height < minHeight {
+			minHeight = height
+			minIdx = i - k + 1
+		}
 	}
-	return b
+	// NOTE: one indexed
+	return minIdx + 1
 }
 
 func stringToIntSlice(s string) []int {
@@ -86,6 +87,10 @@ func main() {
 	w := bufio.NewWriter(os.Stdout)
 	defer w.Flush()
 
-	result := solve()
+	nk := readIntSlice(r)
+	k := nk[1]
+	plankHeights := readIntSlice(r)
+
+	result := solve(k, plankHeights)
 	w.WriteString(fmt.Sprintf("%v\n", result))
 }

@@ -9,22 +9,26 @@ import (
 	"strings"
 )
 
-func solve() string {
-	return "solution"
-}
-
-func max(a, b int) int {
-	if a > b {
-		return a
+func solve(prices, money []int) []int {
+	const shopMax = 100000
+	available := make([]int, shopMax+1)
+	for _, p := range prices {
+		available[p]++
 	}
-	return b
-}
 
-func min(a, b int) int {
-	if a > b {
-		return a
+	for i := 1; i < len(available); i++ {
+		available[i] += available[i-1]
 	}
-	return b
+
+	buy := make([]int, len(money))
+	for i, m := range money {
+		if m > shopMax {
+			buy[i] = len(prices)
+		} else {
+			buy[i] = available[m]
+		}
+	}
+	return buy
 }
 
 func stringToIntSlice(s string) []int {
@@ -86,6 +90,16 @@ func main() {
 	w := bufio.NewWriter(os.Stdout)
 	defer w.Flush()
 
-	result := solve()
-	w.WriteString(fmt.Sprintf("%v\n", result))
+	_ = readInt(r)
+	prices := readIntSlice(r)
+	days := readInt(r)
+	money := make([]int, days)
+	for i := 0; i < days; i++ {
+		money[i] = readInt(r)
+	}
+
+	result := solve(prices, money)
+	for _, r := range result {
+		w.WriteString(fmt.Sprintf("%v\n", r))
+	}
 }

@@ -9,8 +9,26 @@ import (
 	"strings"
 )
 
-func solve() string {
-	return "solution"
+func solve(s string, queries [][]int) []int {
+	table := make([]int, len(s)+1)
+	if s[0] == s[1] {
+		table[1] = 1
+	}
+	for i := 2; i < len(s); i++ {
+		if s[i-1] == s[i] {
+			table[i] = table[i-1] + 1
+		} else {
+			table[i] = table[i-1]
+		}
+	}
+	table[len(s)] = table[len(s)-1]
+
+	responses := make([]int, len(queries))
+	for i, q := range queries {
+		lo, hi := q[0], q[1]
+		responses[i] = table[hi-1] - table[lo-1]
+	}
+	return responses
 }
 
 func max(a, b int) int {
@@ -21,7 +39,7 @@ func max(a, b int) int {
 }
 
 func min(a, b int) int {
-	if a > b {
+	if a < b {
 		return a
 	}
 	return b
@@ -86,6 +104,15 @@ func main() {
 	w := bufio.NewWriter(os.Stdout)
 	defer w.Flush()
 
-	result := solve()
-	w.WriteString(fmt.Sprintf("%v\n", result))
+	s := readString(r)
+	n := readInt(r)
+	queries := make([][]int, n)
+	for i := 0; i < n; i++ {
+		queries[i] = readIntSlice(r)
+	}
+
+	result := solve(s, queries)
+	for _, r := range result {
+		w.WriteString(fmt.Sprintf("%v\n", r))
+	}
 }

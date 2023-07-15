@@ -9,22 +9,15 @@ import (
 	"strings"
 )
 
-func solve() string {
-	return "solution"
-}
-
-func max(a, b int) int {
-	if a > b {
-		return a
+func solve(n int) int {
+	if n <= 1 {
+		return n
 	}
-	return b
-}
-
-func min(a, b int) int {
-	if a > b {
-		return a
+	count, bacteria := 1, 1
+	for bacteria <= n {
+		bacteria *= 2
 	}
-	return b
+	return count + solve(n-bacteria/2)
 }
 
 func stringToIntSlice(s string) []int {
@@ -86,6 +79,6 @@ func main() {
 	w := bufio.NewWriter(os.Stdout)
 	defer w.Flush()
 
-	result := solve()
+	result := solve(readInt(r))
 	w.WriteString(fmt.Sprintf("%v\n", result))
 }
